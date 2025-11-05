@@ -8,11 +8,8 @@ const memeModal = document.getElementById('meme-modal')
 const memeModalCloseBtn = document.getElementById('meme-modal-close-btn')
 
 emotionRadiosEl.addEventListener('change', highlightCheckedOption)
+memeModalCloseBtn.addEventListener('click', closeModal)
 getImageBtn.addEventListener('click', renderCat)
-
-memeModalCloseBtn.addEventListener('click', function(){
-    memeModal.style.display = 'none'
-})
 
 function highlightCheckedOption(e){
     const radios = document.getElementsByClassName('radio')
@@ -24,17 +21,8 @@ function highlightCheckedOption(e){
     document.getElementById(e.target.id).parentElement.classList.add('highlight')
 }
 
-function getSingleCatObject(){
-    const catsArray = getMatchingCatsArray()
-    console.log(catsArray)
-
-    if(catsArray.length === 1){
-        return catsArray[0]
-    }
-    else{
-        const randomIndex = Math.floor(Math.random() * catsArray.length)
-        return catsArray[randomIndex]
-    }
+function closeModal(){
+    memeModal.style.display = 'none'
 }
 
 function renderCat(){
@@ -49,10 +37,21 @@ function renderCat(){
     memeModal.style.display = 'flex'
 }
 
+function getSingleCatObject(){
+    const catsArray = getMatchingCatsArray()
+
+    if(catsArray.length === 1){
+        return catsArray[0]
+    }
+    else{
+        const randomIndex = Math.floor(Math.random() * catsArray.length)
+        return catsArray[randomIndex]
+    }
+}
+
 function getMatchingCatsArray(){
     if(document.querySelector('input[type="radio"]:checked')) {
         const checkedEmotion = document.querySelector('input[type="radio"]:checked').value
-
         const isGif = gifsOnlyOption.checked
 
         const matchingCats = catsData.filter(function(cat){
@@ -61,17 +60,6 @@ function getMatchingCatsArray(){
 
         return matchingCats
     }
-}
-
-function getEmotionsArray(cats){
-    const emotionsArray = []
-    for (let cat of cats) {
-        for (let emotion of cat.emotionTags) {
-            if(!emotionsArray.includes(emotion)) 
-                emotionsArray.push(emotion)
-        }
-    }
-    return emotionsArray
 }
 
 function renderEmotionsRadios(cats) {
@@ -92,6 +80,17 @@ function renderEmotionsRadios(cats) {
         `
     }
     emotionRadiosEl.innerHTML = radios_html
+}
+
+function getEmotionsArray(cats){
+    const emotionsArray = []
+    for (let cat of cats) {
+        for (let emotion of cat.emotionTags) {
+            if(!emotionsArray.includes(emotion)) 
+                emotionsArray.push(emotion)
+        }
+    }
+    return emotionsArray
 }
 
 renderEmotionsRadios(catsData)
