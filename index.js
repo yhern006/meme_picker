@@ -7,9 +7,24 @@ const memeModalInner = document.getElementById('meme-modal-inner')
 const memeModal = document.getElementById('meme-modal')
 const memeModalCloseBtn = document.getElementById('meme-modal-close-btn')
 
+window.addEventListener('click', outsideModalClick)
 emotionRadiosEl.addEventListener('change', highlightCheckedOption)
 memeModalCloseBtn.addEventListener('click', closeModal)
 getImageBtn.addEventListener('click', renderCat)
+
+// allows user to click outside of modal to close modal
+function outsideModalClick(e){
+    if(e.target === getImageBtn) 
+        return
+
+    if(e.target === memeModal 
+        || e.target.parentElement === memeModalInner){
+            return
+    }
+    else{
+        closeModal()
+    }
+}
 
 function highlightCheckedOption(e){
     const radios = document.getElementsByClassName('radio')
